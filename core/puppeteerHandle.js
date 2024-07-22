@@ -5,7 +5,7 @@ async function searchSelector(selector, pageOrIframe) {
     let isSelectorFound = false;
     while (retrySearchSelector < 3 && !isSelectorFound) {
         try {
-            await pageOrIframe.waitForSelector(selector);
+            await pageOrIframe.waitForSelector(selector, { visible: true });
             isSelectorFound = true;
         } catch (error) {
             prettyConsole('error', error.message);

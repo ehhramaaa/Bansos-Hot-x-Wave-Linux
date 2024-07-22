@@ -41,9 +41,9 @@ async function hotWallet(page, threshold) {
     prettyConsole('success', `Balance\t:${hotBalance} $HOT🔥`)
     
     // Get Account Storage
-    const storage = parseFloat(await iframeGetHeight('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe))
+    const storage = await iframeGetHeight('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe)
 
-    if (storage === undefined) {
+    if (typeof(storage) !== "number") {
         return
     }
     
