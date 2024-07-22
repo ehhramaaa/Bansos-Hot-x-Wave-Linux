@@ -3,7 +3,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 const { exec } = require("node:child_process");
 const chalk = require("chalk");
-const prompt = require('prompt-sync')({ sigint: true });
+const readline = require('readline');
 
 
 function sleep(ms) {
@@ -75,29 +75,26 @@ async function chromiumReadProfile(folderPath, folderName) {
         prettyConsole('error', error);
     }
 }
+
 async function askQuestionWithTimeout(question, timeout) {
-    const defaultAnswer = 'y';
-
-    const getUserInput = () => {
-        return new Promise((resolve) => {
-            const answer = prompt(question, defaultAnswer).trim().toLowerCase();
-            if (answer === 'y' || answer === 'n' || answer === '') {
-                resolve(answer === 'y' || answer === '' ? true : false);
-            } else {
-                console.log("Please answer with 'y' or 'n'.");
-                resolve(getUserInput());
-            }
+    return new Promise((resolve) => {
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
         });
-    };
 
-    const timeoutPromise = new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(true);
+        const timer = setTimeout(() => {
+            rl.close();
+            resolve('y');
         }, timeout);
-    });
 
-    return Promise.race([getUserInput(), timeoutPromise]);
-}
+        rl.question(question, (answer) => {
+            clearTimeout(timer);
+            rl.close();
+            resolve(answer.trim().toLowerCase() || 'y');
+        });
+    });
+};
 
 module.exports = {
     prettyConsole,
