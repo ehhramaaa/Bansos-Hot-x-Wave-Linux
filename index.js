@@ -25,8 +25,6 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         await stopChromium()
 
-        await stopOpenVpn()
-
         await sleep(3000)
 
         await checkIp()
