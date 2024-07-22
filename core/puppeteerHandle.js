@@ -63,8 +63,7 @@ async function iframeGetText(selector, iframe) {
     if (isSelectorFound) {
         try {
             const text = await iframe.evaluate((element) => {
-                const element = document.querySelector(element);
-                return element.textContent
+                return document.querySelector(element).textContent
             }, selector);
 
             return text;
