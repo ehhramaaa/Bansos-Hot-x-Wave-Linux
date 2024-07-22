@@ -56,7 +56,7 @@ async function iframeHandling(iframeSelector, page) {
 }
 
 async function iframeGetText(selector, iframe) {
-    const isSelectorFound = await searchSelector(iframeSelector, page)
+    const isSelectorFound = await searchSelector(selector, iframe)
 
     if (isSelectorFound) {
         try {
@@ -73,7 +73,7 @@ async function iframeGetText(selector, iframe) {
 }
 
 async function iframeClicker(selector, iframe) {
-    const isSelectorFound = await searchSelector(iframeSelector, page)
+    const isSelectorFound = await searchSelector(selector, iframe)
 
     if (isSelectorFound) {
         try {
@@ -89,7 +89,7 @@ async function iframeClicker(selector, iframe) {
 }
 
 async function iframeGetHeight(selector, iframe) {
-    const isSelectorFound = await searchSelector(iframeSelector, page)
+    const isSelectorFound = await searchSelector(selector, iframe)
 
     if (isSelectorFound) {
         try {
