@@ -23,9 +23,15 @@ async function hotWallet(page, threshold) {
     prettyConsole('success', `Account\t:${accountName}`)
 
     // Get Near Balance
-    const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:nth-child(3) > p.sc-gnpbhQ.exwOjV', iframe))
+    const nearBalance1 = await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:nth-child(3) > p.sc-gnpbhQ.exwOjV', iframe)
 
-    if (nearBalance === undefined) {
+    console.log(nearBalance1)
+    
+    // Get Near Balance
+    const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:nth-child(3) > p.sc-gnpbhQ.exwOjV', iframe))
+    console.log(nearBalance)
+    
+    if (typeof(nearBalance) === "number") {
         return
     }
 
@@ -34,7 +40,7 @@ async function hotWallet(page, threshold) {
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div:nth-child(2) > div > div > div:nth-child(6) > div:nth-child(1) > div > p:nth-child(2)', iframe))
 
-    if (hotBalance === undefined) {
+    if (typeof(hotBalance) === "number") {
         return
     }
     
