@@ -29,7 +29,7 @@ async function hotWallet(page, threshold) {
         return
     }
 
-    prettyConsole('success', `Near Balance :${nearBalance} $NEAR`)
+    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
 
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div:nth-child(2) > div > div > div:nth-child(6) > div:nth-child(1) > div > p:nth-child(2)', iframe))
@@ -38,7 +38,7 @@ async function hotWallet(page, threshold) {
         return
     }
     
-    prettyConsole('success', `Balance :${hotBalance} $HOT🔥`)
+    prettyConsole('success', `Balance\t:${hotBalance} $HOT🔥`)
     
     // Get Account Storage
     const storage = parseFloat(await iframeGetHeight('#root > div > div > div:nth-child(2) > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe))
@@ -47,7 +47,7 @@ async function hotWallet(page, threshold) {
         return
     }
     
-    prettyConsole('success', `Storage \t:${storage}%`)
+    prettyConsole('success', `Storage\t:${storage}%`)
     
     if (storage >= threshold) {
         let reClaim = 0
@@ -160,7 +160,7 @@ async function waveWallet(page) {
         // Check Claim Time
         const claimTime = await iframeGetText(".span.boat_balance", iframe)
         
-        prettyConsole('info', `Claim Countdown:${claimTime}`)
+        prettyConsole('info', `Claim Countdown\t:${claimTime}`)
     }
 
     if (isClaimTime) {

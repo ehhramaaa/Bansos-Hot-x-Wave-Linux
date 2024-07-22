@@ -63,7 +63,8 @@ async function iframeGetText(selector, iframe) {
     if (isSelectorFound) {
         try {
             const text = await iframe.evaluate((element) => {
-                return document.querySelector(element).textContent
+                const content = document.querySelector(element);
+                return content.textContent
             }, selector);
 
             return text;
@@ -93,7 +94,8 @@ async function iframeGetHeight(selector, iframe) {
     if (isSelectorFound) {
         try {
             const height = await iframe.evaluate((element) => {
-                return window.getComputedStyle(element).height;
+                const content = window.getComputedStyle(element).height
+                return content;
             }, selector);
 
             return height;
