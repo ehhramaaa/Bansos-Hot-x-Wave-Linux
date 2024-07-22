@@ -12,7 +12,7 @@ async function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
             }
             if (data.toString().includes("AUTH_FAILED")){
                 prettyConsole('error', "OpenVPN Auth Failed, Please Check Credentials")
-                reject(error);
+                reject(false);
             }
         }); 
     });
