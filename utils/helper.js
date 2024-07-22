@@ -3,6 +3,7 @@ const path = require("path");
 const fetch = require("node-fetch");
 const { exec } = require("node:child_process");
 const chalk = require("chalk");
+const prompt = require('prompt-sync')({ sigint: true });
 
 
 function sleep(ms) {
@@ -17,11 +18,11 @@ async function rest() {
 
 function prettyConsole(status, text) {
     if (status === "success") {
-        console.log(chalk.green(`[${status.toUpperCase()}] `, text))
+        console.log(chalk.green(`[${status.toUpperCase()}]`, text))
     } else if (status === "info") {
-        console.log(chalk.whiteBright(`[${status.toUpperCase()}] `, text))
+        console.log(chalk.whiteBright(`[${status.toUpperCase()}]`, text))
     } else {
-        console.error(chalk.red(`[${status.toUpperCase()}] `, text))
+        console.error(chalk.red(`[${status.toUpperCase()}]`, text))
     }
 }
 
@@ -75,6 +76,31 @@ async function chromiumReadProfile(folderPath, folderName) {
     }
 }
 
+const askQuestionWithTimeout = (question, timeout) => {
+    const defaultAnswer = 'y';
+    return new Promise((resolve) => {
+        let resolved = false;
+        const timer = setTimeout(() => {
+            if (!resolved) {
+                resolved = true;
+                resolve(true);
+            }
+        }, timeout);
+
+        let answer;
+        while (!resolved) {
+            answer = prompt(question, defaultAnswer).trim().toLowerCase();
+            if (answer === 'y' || answer === 'n' || answer === '') {
+                clearTimeout(timer);
+                resolved = true;
+                resolve(answer === 'y' || answer === '' ? true : false);
+            } else {
+                console.log("Please answer with 'y' or 'n'.");
+            }
+        }
+    });
+};
+
 module.exports = {
     prettyConsole,
     checkIp,
@@ -82,5 +108,6 @@ module.exports = {
     ovpnReadConfig,
     chromiumReadProfile,
     rest,
-    sleep
+    sleep,
+    askQuestionWithTimeout
 }

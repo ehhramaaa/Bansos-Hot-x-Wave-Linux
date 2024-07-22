@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const os = require("os");
 const { startOpenVpn, stopOpenVpn } = require("./core/openvpn")
 const { hotWallet, waveWallet } = require("./core/bot")
-const { sleep, prettyConsole, checkIp, stopChromium, ovpnReadConfig, chromiumReadProfile, rest} = require('./utils/helper')
+const { sleep, prettyConsole, checkIp, stopChromium, ovpnReadConfig, chromiumReadProfile, rest, askQuestionWithTimeout } = require('./utils/helper')
 require('dotenv').config();
 
 const openVpnPath = process.env.OPEN_VPN_PATH;
@@ -14,33 +14,43 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 (async () => {
     let totalBalanceNear = 0
     let totalBalanceHot = 0
-    let totalBalanceOcean= 0
+    let totalBalanceOcean = 0
     let totalBalanceSui = 0
+    let ovpnConfig
 
-    const ovpnConfig = await ovpnReadConfig(openVpnPath)
+    const isUseVpn = await askQuestionWithTimeout("Use OpenVpn?(y/n) [default:y]", 5000)
+
+    isUseVpn ? ovpnConfig = await ovpnReadConfig(openVpnPath) : null;
+
     const profileChromium = await chromiumReadProfile(chromiumUserPath, profileFolderName)
+
     let profileIndex = 0;
     for (const profile of profileChromium) {
         console.log(`\n<==============================[${profile}]==============================>`)
 
         await stopChromium()
 
+        await stopOpenVpn();
+
         await sleep(3000)
 
         await checkIp()
 
-        const isVpnConnect = await startOpenVpn(openVpnPath, ovpnConfig, profileIndex)
+        if (isUseVpn) {
+            const isVpnConnect = await startOpenVpn(openVpnPath, ovpnConfig, profileIndex);
 
-        if (isVpnConnect) {
-            prettyConsole('success',"VPN connected successfully!")
-            await checkIp();
-        } else {
-            await rest()
-            continue
+            if (isVpnConnect) {
+                prettyConsole('success', "VPN connected successfully!")
+                await checkIp();
+            } else {
+                await rest()
+                continue
+            }
         }
 
+
         let launchOptions = {
-            executablePath : chromiumExecPath,
+            executablePath: chromiumExecPath,
             headless: true,
             args: [
                 `--user-data-dir=${chromiumUserPath}`,
@@ -54,10 +64,10 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         const page = await browser.newPage();
         await page.setDefaultTimeout(60000);
-        
+
         const balanceHot = await hotWallet(page, hotThreshold)
         totalBalanceHot = totalBalanceHot + balanceHot
-        
+
         const [balanceSui, balanceOcean] = await waveWallet(page)
         totalBalanceSui = totalBalanceSui + balanceSui
         totalBalanceOcean = totalBalanceOcean + balanceOcean
