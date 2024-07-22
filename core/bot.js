@@ -25,8 +25,9 @@ async function hotWallet(page, threshold) {
     // Get Near Balance
     const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:last-child > p:last-of-type', iframe))
 
+    prettyConsole('info', typeof(nearBalance))
     prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
-    
+
     if (typeof(nearBalance) === "number") {
         return
     }
