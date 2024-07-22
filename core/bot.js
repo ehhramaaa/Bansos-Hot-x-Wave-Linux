@@ -55,14 +55,14 @@ async function hotWallet(page, threshold) {
         while (reClaim < 3 && !isClaimed) {
             try {
                 // Click Storage Hot
-                await iframeClicker('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2)', page, iframe)
+                await iframeClicker('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2)', iframe)
             } catch (error) {
                 prettyConsole('error', error.message)
             }
 
             try {
                 // Click Claim Hot
-                await iframeClicker('#root > div > div > div:nth-child(4) > div > div:nth-child(3) > div > div:nth-child(2) > div:nth-child(3) > button', page, iframe)
+                await iframeClicker('#root > div > div > div:nth-child(4) > div > div:nth-child(3) > div > div:nth-child(2) > div:nth-child(3) > button', iframe)
             } catch (error) {
                 prettyConsole('error', error.message)
             }
