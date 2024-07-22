@@ -92,11 +92,12 @@ async function iframeGetHeight(selector, iframe) {
 
     if (isSelectorFound) {
         try {
-            const height = await iframe.evaluate((element) => {
-                return window.getComputedStyle(element).height;
+            const value = await iframe.evaluate((element) => {
+                const height = window.getComputedStyle(element).getPropertyValue("height").match(/\d+(\.\d+)?/);
+                return Math.floor(parseFloat(height[0]))
             }, selector);
 
-            return height;
+            return value;
         } catch (error) {
             prettyConsole('error', error.message);
         }
