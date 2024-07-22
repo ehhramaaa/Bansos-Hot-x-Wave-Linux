@@ -1,7 +1,7 @@
 const { exec } = require("node:child_process");
 const { prettyConsole } = require("../utils/helper");
 
-async function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
+function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
     return new Promise((resolve, reject) => {
         const openVpnProcess = exec(`doas openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);;
 
