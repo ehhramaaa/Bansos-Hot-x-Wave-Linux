@@ -62,11 +62,11 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await page.setDefaultNavigationTimeout(0)
         await page.setDefaultTimeout(15000);
 
-        // const balanceHot = await hotWallet(page, hotThreshold)
+        const balanceHot = await hotWallet(page, hotThreshold)
 
-        // if (typeof balanceHot === "number") {
-        //     totalBalanceHot = totalBalanceHot + balanceHot
-        // }
+        if (typeof balanceHot === "number") {
+            totalBalanceHot = totalBalanceHot + balanceHot
+        }
 
         await page.goBack()
 

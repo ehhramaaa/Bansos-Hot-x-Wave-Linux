@@ -48,7 +48,7 @@ async function iframeHandling(iframeSelector, page) {
 
             await sleep(3000)
 
-            return iframeElementHandle
+            return await iframeElementHandle.contentFrame();
         } catch (error) {
             prettyConsole('error', error.message);
         }
