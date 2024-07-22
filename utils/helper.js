@@ -91,13 +91,16 @@ async function askQuestionWithTimeout(question, timeout) {
         rl.question(question, (answer) => {
             clearTimeout(timer);
             rl.close();
-            switch (answer.trim().toLowerCase()){
+            switch (answer.trim().toLowerCase()) {
                 case "y":
                     resolve(true);
+                    break;
                 case "n":
                     resolve(false);
+                    break;
                 default:
                     prettyConsole('error', "Please Input y/n")
+                    break;
             }
         });
     });

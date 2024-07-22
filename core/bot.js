@@ -14,48 +14,54 @@ async function hotWallet(page, threshold) {
     const iframe = await iframeHandling('.payment-verification', page)
 
     // Get Account Name
-    const accountName = await iframeGetText('#root > div > div > div:nth-child(1) > div > div > div:nth-child(1) > p', iframe)
+    const accountName = await iframeGetText('#root > div > div > div > div > div > div:nth-child(1) > div > p', iframe)
 
     prettyConsole('success', `Account\t:${accountName}`)
 
     // Get Account Balance
-    const balance = parseFloat(await iframeGetText('#root > div > div > div:nth-child(1) > div > div > div:nth-child(4) > div:nth-child(1) > div:nth-child(2) > div > p', iframe))
+    const balance = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(6) > div:nth-child(1) > div > p:nth-child(2)', iframe))
 
     prettyConsole('success', `Balance :${balance} $HOT🔥`)
 
     // Get Account Storage
-    const storage = parseFloat(await iframeGetText('#root > div > div > div:nth-child(1) > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe))
+    const storage = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe))
 
     prettyConsole('success', `Storage \t:${storage}%`)
 
     if (storage >= threshold) {
-        // Click Storage Hot
-        await iframeClicker('#root > div > div > div:nth-child(1) > div > div > div:nth-child(4) > div:nth-child(2)', page, iframe)
-
-        // Click Claim Hot
-        await iframeClicker('#root > div > div > div:nth-child(4) > div > div:nth-child(3) > div > div:nth-child(2) > div:nth-child(3) > button', page, iframe)
-
-        let balanceAfter = 0
-        let tryMakeSure = 0
-
-        // Check Balance After Claim For Make Sure Claimed
-        while (tryMakeSure <= 5 && balanceAfter <= balance) {
-            balanceAfter = parseFloat(await iframeGetText('#root > div > div > div:nth-child(4) > div > div:nth-child(2) > div:nth-child(4) > p:nth-child(3)', iframe))
-
-            if (tryMakeSure === 3) {
-                prettyConsole('info', `Still Claiming $HOT🔥...')`)
+        let reClaim = 0
+        let isClaimed = false
+        while (reClaim < 3 && !isClaimed){
+            // Click Storage Hot
+            await iframeClicker('#root > div > div > div > div > div > div:nth-child(4) > div:nth-child(2)', page, iframe)
+    
+            // Click Claim Hot
+            await iframeClicker('#root > div > div > div:nth-child(4) > div > div:nth-child(3) > div > div:nth-child(2) > div:nth-child(3) > button', page, iframe)
+    
+            let balanceAfter = 0
+            let tryMakeSure = 0
+    
+            // Check Balance After Claim For Make Sure Claimed
+            while (tryMakeSure <= 5 && balanceAfter <= balance) {
+                balanceAfter = parseFloat(await iframeGetText('#root > div > div > div:nth-child(4) > div > div:nth-child(2) > div:nth-child(4) > p:nth-child(3)', iframe))
+    
+                if (tryMakeSure === 3) {
+                    prettyConsole('info', `Still Claiming $HOT🔥...')`)
+                }
+    
+                tryMakeSure++
+    
+                await sleep(5000)
             }
-
-            tryMakeSure++
-
-            await sleep(5000)
-        }
-
-        if (balanceAfter > balance) {
-            prettyConsole('success', `Claim $HOT🔥 Successfully!`)
-            prettyConsole(`Update Balance\t:${balanceAfter} $HOT🔥`)
-        } else {
-            prettyConsole('error', `Failed Claiming $HOT🔥!!!`)
+    
+            if (balanceAfter > balance) {
+                isClaimed = true
+                prettyConsole('success', `Claim $HOT🔥 Successfully!`)
+                prettyConsole(`Update Balance\t:${balanceAfter} $HOT🔥`)
+            } else {
+                reClaim++
+                prettyConsole('error', `Failed Claiming $HOT🔥!!!`)
+            }
         }
     } else {
         prettyConsole('error', `You Can Claim $HOT🔥 If Storage >= ${threshold}% `)
@@ -77,25 +83,25 @@ async function waveWallet(page) {
     const iframe = await iframeHandling('.payment-verification', page)
 
     // Get Balance SUI
-    const balanceSui = parseFloat(await iframeGetText('div.portfolio_block > div:nth-child(2) > div > div:nth-child(1) > p.wave_number', iframe))
+    const balanceSui = parseFloat(await iframeGetText('.div.portfolio_block > div > div > div:nth-child(1) > p.wave_number', iframe))
 
     prettyConsole('success', `Balance\t:${balanceSui} $SUI💧'`)
 
     // Click Claim Now
-    await iframeClicker('#section-home > div > div > div:nth-child(3) > div > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > button', iframe)
+    await iframeClicker('.div.block-home > div:nth-child(3) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > button', iframe)
 
     // Get Balance OCEAN
-    const balanceOcean = parseFloat(await iframeGetText('#section-transaction > div > div > div > button > p', iframe))
+    const balanceOcean = parseFloat(await iframeGetText('.p.wave-balance', iframe))
 
     prettyConsole('success', `Balance\t:${balanceOcean} $OCEAN💎`)
 
     // Get Speed OCEAN
-    const speed = parseFloat(await iframeGetText('#section-transaction > div.direction-tab.flex.flex-col.items-center.gap-6.pt-4 > div.menu-block > div > div.menu_2.relative > div.menu_title.flex.flex-row.justify-between.items-center.absolute > div > span.time', iframe))
+    const speed = parseFloat(await iframeGetText('.menu_2 > div > div > span.time', iframe))
 
     prettyConsole('success', `Speed\t:${speed} $OCEAN💎/Hours`)
 
     // Get Storage OCEAN
-    const storage = parseFloat(await iframeGetText('#section-transaction > div.direction-tab.flex.flex-col.items-center.gap-6.pt-4 > div.menu-block > div > div.menu_2.relative > div.menu_title.flex.flex-row.justify-between.items-center.absolute > div > span.time', iframe))
+    const storage = parseFloat(await iframeGetText('.menu_1 > div > div > span.time', iframe))
 
     prettyConsole('success', `Max Storage\t:${storage} Hours`)
 
@@ -107,7 +113,7 @@ async function waveWallet(page) {
         isClaimTime = true
     } catch (error) {
         // Check Claim Time
-        const claimTime = await iframeGetText("#section-transaction > div > div > div:nth-child(3) > div > div > div > div:nth-child(2) > span", iframe)
+        const claimTime = await iframeGetText(".span.boat_balance", iframe)
 
         prettyConsole('info', `Claim Countdown:${claimTime}`)
     }
@@ -124,7 +130,7 @@ async function waveWallet(page) {
             let checkClaim = 0;
             while (checkClaim < 3 && !isClaimed) {
                 try {
-                    await iframe.waitForSelector('#section-transaction > div > div > div:nth-child(3) > div > div > div > div:nth-child(2) > span');
+                    await iframe.waitForSelector('.span.boat_balance');
                     isClaimed = true
                 } catch (error) {
                     prettyConsole(chalk.yellow(`Still Claiming ${chalk.cyan('$OCEAN💎')}......`))

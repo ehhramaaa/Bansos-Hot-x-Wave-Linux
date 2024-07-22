@@ -36,8 +36,6 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         await checkIp()
 
-        console.log(isUseVpn)
-
         if (isUseVpn) {
             const isVpnConnect = await startOpenVpn(openVpnPath, ovpnConfig, profileIndex);
 
