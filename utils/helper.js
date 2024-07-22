@@ -75,37 +75,28 @@ async function chromiumReadProfile(folderPath, folderName) {
         prettyConsole('error', error);
     }
 }
-
 async function askQuestionWithTimeout(question, timeout) {
     const defaultAnswer = 'y';
-    return new Promise((resolve) => {
-        let resolved = false;
 
-        // Set timeout handler
-        const timer = setTimeout(() => {
-            if (!resolved) {
-                resolved = true;
-                console.log(`\nDefaulting to '${defaultAnswer}' due to timeout.`);
-                resolve(true);
+    const getUserInput = () => {
+        return new Promise((resolve) => {
+            const answer = prompt(question, defaultAnswer).trim().toLowerCase();
+            if (answer === 'y' || answer === 'n' || answer === '') {
+                resolve(answer === 'y' || answer === '' ? true : false);
+            } else {
+                console.log("Please answer with 'y' or 'n'.");
+                resolve(getUserInput());
             }
+        });
+    };
+
+    const timeoutPromise = new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(true);
         }, timeout);
-
-        const checkInput = () => {
-            if (!resolved) {
-                const answer = prompt(question, defaultAnswer).trim().toLowerCase();
-                if (answer === 'y' || answer === 'n' || answer === '') {
-                    clearTimeout(timer);
-                    resolved = true;
-                    resolve(answer === 'y' || answer === '' ? true : false);
-                } else {
-                    console.log("Please answer with 'y' or 'n'.");
-                    setImmediate(checkInput);
-                }
-            }
-        };
-
-        checkInput();
     });
+
+    return Promise.race([getUserInput(), timeoutPromise]);
 }
 
 module.exports = {
