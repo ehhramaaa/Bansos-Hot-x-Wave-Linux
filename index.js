@@ -41,6 +41,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
             if (isVpnConnect) {
                 prettyConsole('success', "VPN connected successfully!")
+                await sleep(3000)
                 await checkIp();
             } else {
                 await rest()
@@ -63,7 +64,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await sleep(3000)
 
         const page = await browser.newPage();
-        await page.setDefaultTimeout(60000);
+        await page.setDefaultTimeout(30000);
 
         const balanceHot = await hotWallet(page, hotThreshold)
         totalBalanceHot = totalBalanceHot + balanceHot

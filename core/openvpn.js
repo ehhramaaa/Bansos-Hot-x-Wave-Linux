@@ -8,7 +8,6 @@ function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
         openVpnProcess.stdout.on('data', (data) => {
             const message = data.toString();
             if (message.includes('Initialization Sequence Completed')) {
-                prettyConsole('success', "OpenVPN Started");
                 resolve(true);
             } else if (message.includes('AUTH_FAILED')) {
                 prettyConsole('error', "OpenVPN Auth Failed, Please Check Credentials");

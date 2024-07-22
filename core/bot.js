@@ -14,17 +14,17 @@ async function hotWallet(page, threshold) {
     const iframe = await iframeHandling('.payment-verification', page)
 
     // Get Account Name
-    const accountName = await iframeGetText('#root > div > div > div > div > div > div:nth-child(1) > div > p', iframe)
+    const accountName = await iframeGetText('#root > div > div > div > div > div > div > div > p', iframe)
 
     prettyConsole('success', `Account\t:${accountName}`)
 
     // Get Account Balance
-    const balance = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(6) > div:nth-child(1) > div > p:nth-child(2)', iframe))
+    const balance = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(6) > div > div > p:nth-child(2)', iframe))
 
     prettyConsole('success', `Balance :${balance} $HOT🔥`)
 
     // Get Account Storage
-    const storage = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe))
+    const storage = parseFloat(await iframeGetText('#root > div > div > div > div > div > div:nth-child(4) > div:nth-child(2) > div > div > div', iframe))
 
     prettyConsole('success', `Storage \t:${storage}%`)
 
