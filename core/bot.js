@@ -14,7 +14,7 @@ async function hotWallet(page, threshold) {
     const iframe = await iframeHandling('.payment-verification', page)
 
     // Get Account Name
-    const accountName = await iframeGetText('.div.bpDheZ > div > div > div > p', iframe)
+    const accountName = await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(1) > div > p', iframe)
 
     if (accountName === undefined) {
         return

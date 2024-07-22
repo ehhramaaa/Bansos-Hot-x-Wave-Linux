@@ -59,7 +59,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await sleep(3000)
 
         const page = await browser.newPage();
-        await page.setDefaultTimeout(30000);
+        await page.setDefaultTimeout(15000);
 
         const balanceHot = await hotWallet(page, hotThreshold)
 
