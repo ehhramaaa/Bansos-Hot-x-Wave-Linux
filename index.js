@@ -32,16 +32,11 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         await stopOpenVpn();
 
-        await sleep(3000)
-
-        await checkIp()
-
         if (isUseVpn) {
             const isVpnConnect = await startOpenVpn(openVpnPath, ovpnConfig, profileIndex);
 
             if (isVpnConnect) {
                 prettyConsole('success', "VPN connected successfully!")
-                await sleep(3000)
                 await checkIp();
             } else {
                 await rest()
@@ -67,13 +62,21 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await page.setDefaultTimeout(30000);
 
         const balanceHot = await hotWallet(page, hotThreshold)
-        totalBalanceHot = totalBalanceHot + balanceHot
+
+        if (typeof balanceHot === "number") {
+            totalBalanceHot = totalBalanceHot + balanceHot
+        }
 
         const [balanceSui, balanceOcean] = await waveWallet(page)
-        totalBalanceSui = totalBalanceSui + balanceSui
-        totalBalanceOcean = totalBalanceOcean + balanceOcean
+        
+        if (typeof balanceSui === "number") {
+            totalBalanceSui = totalBalanceSui + balanceSui
+        }
+        
+        if (typeof balanceOcean === "number") {
+            totalBalanceOcean = totalBalanceOcean + balanceOcean
+        }
 
-        await stopOpenVpn()
         await rest()
     }
 })()
