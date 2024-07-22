@@ -59,13 +59,14 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await sleep(3000)
 
         const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0)
         await page.setDefaultTimeout(15000);
 
-        const balanceHot = await hotWallet(page, hotThreshold)
+        // const balanceHot = await hotWallet(page, hotThreshold)
 
-        if (typeof balanceHot === "number") {
-            totalBalanceHot = totalBalanceHot + balanceHot
-        }
+        // if (typeof balanceHot === "number") {
+        //     totalBalanceHot = totalBalanceHot + balanceHot
+        // }
 
         const [balanceSui, balanceOcean] = await waveWallet(page)
         
