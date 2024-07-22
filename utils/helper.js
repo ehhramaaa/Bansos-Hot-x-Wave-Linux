@@ -30,7 +30,8 @@ async function checkIp() {
     try {
         const response = await fetch(`http://ip-api.com/json/`);
         const data = await response.json();
-        prettyConsole('info', `Current IP : ${data.ipAddress}`)
+        prettyConsole('info', `Current IP : ${data.query}`)
+        prettyConsole('info', `Provider : ${data.as}`)
         return data.ipAddress;
     } catch (error) {
         prettyConsole('error', error);

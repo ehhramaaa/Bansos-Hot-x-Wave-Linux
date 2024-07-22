@@ -14,7 +14,7 @@ async function hotWallet(page, threshold) {
     const iframe = await iframeHandling('.payment-verification', page)
 
     // Get Account Name
-    const accountName = await iframeGetText('#root > div > div > div:nth-child(2) > div > div > div:nth-child(1) > div > p', iframe)
+    const accountName = await iframeGetText('.div.bpDheZ > div > div > div > p', iframe)
 
     if (accountName === undefined) {
         return
@@ -23,7 +23,7 @@ async function hotWallet(page, threshold) {
     prettyConsole('success', `Account\t:${accountName}`)
 
     // Get Near Balance
-    const nearBalance = parseFloat(await iframeGetText('#root > div > div > div:nth-child(2) > div > div > div:nth-child(6) > div:nth-child(2) > div > div:nth-child(3) > p:nth-child(2)', iframe))
+    const nearBalance = parseFloat(await iframeGetText('.div.bpDheZ > div > div:nth-child(6) > div:nth-child(2) > div > div:nth-child(3) > p:nth-child(2)', iframe))
 
     if (nearBalance === undefined) {
         return
