@@ -25,11 +25,12 @@ async function hotWallet(page, threshold) {
     // Get Near Balance
     const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:last-child > p:last-of-type', iframe))
 
+    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
+    
     if (typeof(nearBalance) === "number") {
         return
     }
 
-    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
 
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(1) > div > p.sc-gnpbhQ.exwOjV', iframe))
