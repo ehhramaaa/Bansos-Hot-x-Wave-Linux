@@ -76,11 +76,11 @@ async function chromiumReadProfile(folderPath, folderName) {
     }
 }
 
-const askQuestionWithTimeout = (question, timeout) => {
+async function askQuestionWithTimeout (question, timeout) {
     const defaultAnswer = 'y';
     return new Promise((resolve) => {
         let resolved = false;
-        const timer = setTimeout(() => {
+        const timer = setInterval(() => {
             if (!resolved) {
                 resolved = true;
                 resolve(true);
