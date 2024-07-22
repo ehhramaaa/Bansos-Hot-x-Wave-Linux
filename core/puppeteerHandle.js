@@ -61,10 +61,26 @@ async function iframeClicker(selector, iframe) {
     }
 }
 
+async function iframeGetHeight(selector, iframe) {
+    try {
+        await iframe.waitForSelector(selector);
+
+        const height = await iframe.evaluate(() => {
+            return window.getComputedStyle(selector).height;
+        });
+
+        return height;
+
+    } catch (error) {
+        prettyConsole('error', error.message);
+    }
+}
+
 module.exports = {
     navigateUrl,
     clickElement,
     iframeHandling,
     iframeGetText,
-    iframeClicker
+    iframeClicker,
+    iframeGetHeight
 }

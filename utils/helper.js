@@ -28,7 +28,7 @@ function prettyConsole(status, text) {
 
 async function checkIp() {
     try {
-        const response = await fetch(`https://freeipapi.com/api/json`);
+        const response = await fetch(`http://ip-api.com/json/`);
         const data = await response.json();
         prettyConsole('info', `Current IP : ${data.ipAddress}`)
         return data.ipAddress;
