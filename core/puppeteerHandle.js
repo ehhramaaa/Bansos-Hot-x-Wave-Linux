@@ -62,10 +62,10 @@ async function iframeGetText(selector, iframe) {
 
     if (isSelectorFound) {
         try {
-            const text = await iframe.evaluate(() => {
-                const element = document.querySelector(selector);
+            const text = await iframe.evaluate((element) => {
+                const element = document.querySelector(element);
                 return element.textContent
-            });
+            }, selector);
 
             return text;
         } catch (error) {
@@ -79,11 +79,9 @@ async function iframeClicker(selector, iframe) {
 
     if (isSelectorFound) {
         try {
-            await iframe.waitForSelector(selector);
-
-            await iframe.evaluate(() => {
-                document.querySelector(selector).click();
-            });
+            await iframe.evaluate((element) => {
+                document.querySelector(element).click();
+            }, selector);
         } catch (error) {
             prettyConsole('error', error.message);
         }
@@ -95,11 +93,9 @@ async function iframeGetHeight(selector, iframe) {
 
     if (isSelectorFound) {
         try {
-            await iframe.waitForSelector(selector);
-
-            const height = await iframe.evaluate(() => {
-                return window.getComputedStyle(selector).height;
-            });
+            const height = await iframe.evaluate((element) => {
+                return window.getComputedStyle(element).height;
+            }, selector);
 
             return height;
         } catch (error) {
