@@ -23,10 +23,8 @@ async function hotWallet(page, threshold) {
     prettyConsole('success', `Account\t:${accountName}`)
 
     // Get Near Balance
-    const nearBalance = await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:nth-child(3) > p.sc-gnpbhQ.exwOjV', iframe)
+    const nearBalance = await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:last-child > p:last-of-type', iframe)
 
-    console.log(nearBalance)
-    
     if (typeof(nearBalance) === "number") {
         return
     }
