@@ -62,27 +62,35 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         await page.setDefaultNavigationTimeout(0)
         await page.setDefaultTimeout(15000);
 
-        const balanceHot = await hotWallet(page, hotThreshold)
+        const [hotBalance, nearBalance] = await hotWallet(page, hotThreshold)
 
-        if (typeof balanceHot === "number") {
+        if (typeof hotBalance === "number") {
             totalBalanceHot = totalBalanceHot + balanceHot
+            prettyConsole('info', `Total Balance Hot\t:${totalBalanceHot} $HOT🔥`)
         }
-
+        
+        if (typeof nearBalance === "number") {
+            totalBalanceNear = totalBalanceNear + nearBalance
+            prettyConsole('info', `Total Balance Near\t:${totalBalanceNear} $NEAR`)
+        }
+        
         await page.goBack();
-
+        
         const [balanceSui, balanceOcean] = await waveWallet(page)
         
-        // Close Popup
+        // Close Popup Iframe
         const popupSelector = 'body > div.popup.popup-payment.popup-payment-verification.popup-web-app.active'
         await page.waitForSelector(popupSelector)
         await page.click(popupSelector)
         
         if (typeof balanceSui === "number") {
             totalBalanceSui = totalBalanceSui + balanceSui
+            prettyConsole('info', `Total Balance SUI\t:${totalBalanceSui} $SUI💧`)
         }
         
         if (typeof balanceOcean === "number") {
             totalBalanceOcean = totalBalanceOcean + balanceOcean
+            prettyConsole('info', `Total Balance Ocean\t:${totalBalanceOcean} $OCEAN💎`)
         }
 
         await rest()

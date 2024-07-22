@@ -12,7 +12,7 @@ function sleep(ms) {
 
 async function rest() {
     const randomTime = (Math.random() * (30 - 15) + 15) * 1000
-    prettyConsole('info', `Take rest for ${Math.floor(randomTime / 1000)} second\n`)
+    prettyConsole('info', `Take rest for ${Math.floor(randomTime / 1000)} Second\n`)
     await sleep(randomTime)
 }
 
