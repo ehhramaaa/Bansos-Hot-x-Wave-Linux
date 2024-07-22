@@ -85,13 +85,20 @@ async function askQuestionWithTimeout(question, timeout) {
 
         const timer = setTimeout(() => {
             rl.close();
-            resolve('y');
+            resolve(true);
         }, timeout);
 
         rl.question(question, (answer) => {
             clearTimeout(timer);
             rl.close();
-            resolve(answer.trim().toLowerCase() || 'y');
+            switch (answer.trim().toLowerCase()){
+                case "y":
+                    resolve(true);
+                case "n":
+                    resolve(false);
+                default:
+                    prettyConsole('error', "Please Input y/n")
+            }
         });
     });
 };
