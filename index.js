@@ -72,6 +72,11 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         const [balanceSui, balanceOcean] = await waveWallet(page)
         
+        // Close Popup
+        const popupSelector = 'body > div.popup.popup-payment.popup-payment-verification.popup-web-app.active'
+        await page.waitForSelector(popupSelector)
+        await page.click(popupSelector)
+        
         if (typeof balanceSui === "number") {
             totalBalanceSui = totalBalanceSui + balanceSui
         }
