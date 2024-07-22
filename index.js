@@ -18,7 +18,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
     let totalBalanceSui = 0
     let ovpnConfig
 
-    const isUseVpn = await askQuestionWithTimeout("Use OpenVpn?(y/n) [default:y]", 5000)
+    const isUseVpn = await askQuestionWithTimeout("Use OpenVpn?(y/n)[default:y] : ", 5000)
 
     isUseVpn ? ovpnConfig = await ovpnReadConfig(openVpnPath) : null;
 
@@ -51,7 +51,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         let launchOptions = {
             executablePath: chromiumExecPath,
-            headless: true,
+            headless: false,
             args: [
                 `--user-data-dir=${chromiumUserPath}`,
                 `--profile-directory=${profile}`
