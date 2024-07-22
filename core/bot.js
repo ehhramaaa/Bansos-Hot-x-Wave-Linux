@@ -20,7 +20,7 @@ async function hotWallet(page, threshold) {
         return
     }
 
-    prettyConsole('success', `Account\t:${accountName}`)
+    prettyConsole('info', `Account\t:${accountName}`)
 
     // Get Near Balance
     const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:last-child > p:last-of-type', iframe))
@@ -29,7 +29,7 @@ async function hotWallet(page, threshold) {
         return
     }
 
-    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
+    prettyConsole('info', `Near Balance\t:${nearBalance} $NEAR`)
 
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(1) > div > p.sc-gnpbhQ.exwOjV', iframe))
@@ -38,7 +38,7 @@ async function hotWallet(page, threshold) {
         return
     }
     
-    prettyConsole('success', `Balance\t:${hotBalance} $HOT🔥`)
+    prettyConsole('info', `Balance\t:${hotBalance} $HOT🔥`)
     
     // Get Account Storage
     const storage = await iframeGetHeight('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2) > div > div:nth-child(1) > div', iframe)
@@ -47,12 +47,13 @@ async function hotWallet(page, threshold) {
         return
     }
     
-    prettyConsole('success', `Storage\t:${storage}%`)
+    prettyConsole('info', `Storage\t:${storage}%`)
     
     if (storage >= threshold) {
+        prettyConsole('info', `Claiming $HOT🔥...`)
         let reClaim = 0
         let isClaimed = false
-        while (reClaim < 3 && !isClaimed) {
+        while (reClaim < 5 && !isClaimed) {
             try {
                 // Click Storage Hot
                 await iframeClicker('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(4) > div:nth-child(2)', iframe)
