@@ -68,6 +68,8 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
         //     totalBalanceHot = totalBalanceHot + balanceHot
         // }
 
+        await page.goBack()
+
         const [balanceSui, balanceOcean] = await waveWallet(page)
         
         if (typeof balanceSui === "number") {
