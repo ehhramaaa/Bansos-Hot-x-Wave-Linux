@@ -25,18 +25,16 @@ async function hotWallet(page, threshold) {
     // Get Near Balance
     const nearBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(2) > div.sc-drnuxz.gogwPM > div:last-child > p:last-of-type', iframe))
 
-    prettyConsole('info', typeof(nearBalance))
-    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
-
-    if (typeof(nearBalance) === "number") {
+    if (typeof(nearBalance) !== "number") {
         return
     }
 
+    prettyConsole('success', `Near Balance\t:${nearBalance} $NEAR`)
 
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div.sc-ifyrTC.kehHNg > div > div > div:nth-child(6) > div:nth-child(1) > div > p.sc-gnpbhQ.exwOjV', iframe))
 
-    if (typeof(hotBalance) === "number") {
+    if (typeof(hotBalance) !== "number") {
         return
     }
     
@@ -116,7 +114,7 @@ async function waveWallet(page) {
     // Get Balance SUI
     const balanceSui = parseFloat(await iframeGetText('.p.wave_number', iframe))
 
-    if (balanceSui === undefined) {
+    if (typeof(balanceSui) !== "number") {
         return
     }
 
@@ -128,28 +126,20 @@ async function waveWallet(page) {
     // Get Balance OCEAN
     const balanceOcean = parseFloat(await iframeGetText('.p.wave-balance', iframe))
 
-    if (balanceOcean === undefined) {
+    if (typeof(balanceOcean) !== "number") {
         return
     }
 
     prettyConsole('success', `Balance\t:${balanceOcean} $OCEAN💎`)
 
     // Get Speed OCEAN
-    const speed = parseFloat(await iframeGetText('.menu_2 > div > div > span.time', iframe))
-
-    if (speed === undefined) {
-        return
-    }
+    const speed = await iframeGetText('.menu_2 > div > div > span.time', iframe)
 
     prettyConsole('success', `Speed\t:${speed} $OCEAN💎/Hours`)
 
     // Get Storage OCEAN
-    const storage = parseFloat(await iframeGetText('.menu_1 > div > div > span.time', iframe))
+    const storage = await iframeGetText('.menu_1 > div > div > span.time', iframe)
 
-    if (storage === undefined) {
-        return
-    }
-    
     prettyConsole('success', `Max Storage\t:${storage} Hours`)
     
     let isClaimTime, isClaimed = false;
