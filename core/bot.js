@@ -29,7 +29,7 @@ async function hotWallet(page, threshold) {
         return
     }
 
-    prettyConsole('success', `Near Balance :${hotBalance} $NEAR`)
+    prettyConsole('success', `Near Balance :${nearBalance} $NEAR`)
 
     // Get Hot Balance
     const hotBalance = parseFloat(await iframeGetText('#root > div > div > div:nth-child(2) > div > div > div:nth-child(6) > div:nth-child(1) > div > p:nth-child(2)', iframe))
