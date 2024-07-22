@@ -3,20 +3,28 @@ const { prettyConsole } = require("../utils/helper");
 
 function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
     return new Promise((resolve, reject) => {
-        const openVpnProcess = exec(`doas openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);;
+        const openVpnProcess = exec(`doas openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);
 
         openVpnProcess.stdout.on('data', (data) => {
-            if (data.toString().includes('Initialization Sequence Completed')) {
-                prettyConsole('success', "OpenVPN Started")
+            const message = data.toString();
+            if (message.includes('Initialization Sequence Completed')) {
+                prettyConsole('success', "OpenVPN Started");
                 resolve(true);
+            } else if (message.includes('AUTH_FAILED')) {
+                prettyConsole('error', "OpenVPN Auth Failed, Please Check Credentials");
             }
-            if (data.toString().includes("AUTH_FAILED")){
-                prettyConsole('error', "OpenVPN Auth Failed, Please Check Credentials")
-                reject(false);
-            }
-        }); 
+        });
+
+        openVpnProcess.stderr.on('data', (data) => {
+            prettyConsole('error', `OpenVPN Error: ${data.toString()}`);
+        });
+
+        openVpnProcess.on('error', (error) => {
+            prettyConsole('error', `Failed to start OpenVPN: ${error.message}`);
+            reject(error);
+        });
     });
-};
+}
 
 async function stopOpenVpn() {
     try {
