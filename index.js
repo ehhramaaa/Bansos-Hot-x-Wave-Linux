@@ -68,7 +68,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
             totalBalanceHot = totalBalanceHot + balanceHot
         }
 
-        await page.goBack()
+        await page.reload({ waitUntil: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2'] });
 
         const [balanceSui, balanceOcean] = await waveWallet(page)
         
