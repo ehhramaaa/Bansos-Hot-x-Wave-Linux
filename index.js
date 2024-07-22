@@ -21,7 +21,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
     const profileChromium = await chromiumReadProfile(chromiumUserPath, profileFolderName)
     let profileIndex = 0;
     for (const profile of profileChromium) {
-        console.log(chalk.cyan(`\n<==============================[${profile[profileIndex]}]==============================>`))
+        console.log(`\n<==============================[${profile}]==============================>`)
 
         await stopChromium()
 
@@ -54,8 +54,6 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         await sleep(3000)
 
-        prettyConsole('info', `Profile\t:${profile}`)
-        
         const page = await browser.newPage();
         await page.setDefaultTimeout(60000);
         

@@ -9,7 +9,7 @@ async function navigateUrl(url, page) {
     }
 }
 
-async function clickElement(selector) {
+async function clickElement(selector, page) {
     try {
         await page.waitForSelector(selector)
         await sleep(3000)

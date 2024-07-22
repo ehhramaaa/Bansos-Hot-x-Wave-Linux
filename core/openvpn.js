@@ -3,9 +3,10 @@ const { prettyConsole } = require("../utils/helper");
 
 async function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
     return new Promise((resolve, reject) => {
-        const openVpnProcess = exec(`openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);;
+        const openVpnProcess = exec(`doas openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);;
 
         openVpnProcess.stdout.on('data', (data) => {
+            prettyConsole('info', data.toString())
             if (data.toString().includes('Initialization Sequence Completed')) {
                 prettyConsole('success', "OpenVPN Started")
                 resolve(true);
