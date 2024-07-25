@@ -83,8 +83,8 @@ const hotThreshold = process.env.HOT_MINIMAL_STORAGE_CLAIM;
         }
 
         try {
-            await page.waitForSelector('.popup-payment-verification');
-            await page.click('.popup-payment-verification');
+            await page.waitForSelector('.popup-close');
+            await page.click('.popup-close');
         } catch (error) {
             prettyConsole('error', error.message)
         }
