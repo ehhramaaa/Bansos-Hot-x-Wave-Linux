@@ -81,6 +81,13 @@ const hotThreshold = process.env.HOT_MINIMAL_STORAGE_CLAIM;
         } catch (error) {
             prettyConsole('error', error.message)
         }
+
+        try {
+            await page.waitForSelector('.popup-payment-verification');
+            await page.click('.popup-payment-verification');
+        } catch (error) {
+            prettyConsole('error', error.message)
+        }
         
         console.log("\n[Bansos Wave]")
         
