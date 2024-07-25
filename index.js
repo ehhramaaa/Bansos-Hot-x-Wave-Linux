@@ -62,14 +62,14 @@ const hotThreshold = process.env.HOT_MINIMAL_STORAGE_CLAIM;
 
         await sleep(3000)
 
-        const hotPage = await browser.newPage();
-        await hotPage.setDefaultNavigationTimeout(0)
-        await hotPage.setDefaultTimeout(15000);
+        const page = await browser.newPage();
+        await page.setDefaultNavigationTimeout(0)
+        await page.setDefaultTimeout(15000);
 
         console.log("\n[Bansos Hot]")
         
         try {
-            const [hotBalance, nearBalance] = await hotWallet(hotPage, hotThreshold)
+            const [hotBalance, nearBalance] = await hotWallet(page, hotThreshold)
             
             if (typeof hotBalance === "number") {
                 totalBalanceHot = totalBalanceHot + hotBalance
@@ -82,15 +82,10 @@ const hotThreshold = process.env.HOT_MINIMAL_STORAGE_CLAIM;
             prettyConsole('error', error.message)
         }
         
-        await hotPage.close();
-        const wavePage = await browser.newPage();
-        await wavePage.setDefaultNavigationTimeout(0);
-        await wavePage.setDefaultTimeout(15000);
-        
         console.log("\n[Bansos Wave]")
         
         try {
-            const [balanceSui, balanceOcean] = await waveWallet(wavePage)
+            const [balanceSui, balanceOcean] = await waveWallet(page)
             
             
             if (typeof balanceSui === "number") {
