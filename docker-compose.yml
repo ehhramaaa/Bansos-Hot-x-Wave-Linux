@@ -1,0 +1,14 @@
+version: "3"
+services:
+  hot-x-wave-puppeteer:
+    image: hot-x-wave-puppeteer
+    container_name: hot-x-wave-puppeteer
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    volumes:
+      - D:/Chrome Profile:/mnt/chromium-profile
+      - "C:/Program Files/OpenVPN/config:/mnt/openvpn-config"
+    restart: always
+    network_mode: "host"

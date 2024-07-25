@@ -73,7 +73,7 @@ async function hotWallet(page, threshold) {
 
             // Check Balance After Claim For Make Sure Claimed
             while (tryMakeSure <= 5 && balanceAfter <= hotBalance) {
-                balanceAfter = parseFloat(await iframeGetText('#root > div > div > div:nth-child(4) > div > div:nth-child(2) > div:nth-child(4) > p:nth-child(3)', iframe))
+                balanceAfter = parseFloat(parseFloat(await iframeGetText('#root > div > div > div:nth-child(4) > div > div:nth-child(2) > div:nth-child(4) > p:nth-child(3)', iframe)).toFixed(2))
 
                 if (tryMakeSure === 3) {
                     prettyConsole('info', `Still Claiming $HOT🔥...')`)

@@ -3,7 +3,7 @@ const { prettyConsole } = require("../utils/helper");
 
 function startOpenVpn(openVpnPath, ovpnConfig, profileIndex) {
     return new Promise((resolve, reject) => {
-        const openVpnProcess = exec(`doas openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);
+        const openVpnProcess = exec(`openvpn --config ${openVpnPath}/${ovpnConfig[profileIndex]} --auth-user-pass ${openVpnPath}/auth.txt --ca ${openVpnPath}/ca.ipvanish.com.crt`);
 
         openVpnProcess.stdout.on('data', (data) => {
             const message = data.toString();

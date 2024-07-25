@@ -6,10 +6,10 @@ const { sleep, prettyConsole, checkIp, stopChromium, ovpnReadConfig, chromiumRea
 require('dotenv').config();
 
 const openVpnPath = process.env.OPEN_VPN_PATH;
+const chromiumExecPath = process.env.CHROMIUM_EXECUTABLE_PATH;
+const chromiumUserPath = process.env.CHROMIUM_USER_PATH;
 const profileFolderName = process.env.CHROMIUM_PROFILE_NAMING;
 const hotThreshold = process.env.HOT_MINIMAL_STORAGE_CLAIM;
-const chromiumExecPath = process.env.CHROMIUM_EXECUTABLE_PATH;
-const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
 (async () => {
     let totalBalanceNear = 0
@@ -18,7 +18,7 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
     let totalBalanceSui = 0
     let ovpnConfig
 
-    const isUseVpn = await askQuestionWithTimeout("Use OpenVpn?(y/n)[default:y] : ", 5000)
+    const isUseVpn = await askQuestionWithTimeout("Use OpenVpn?(y/n)[default:y] : ", 100)
 
     isUseVpn ? ovpnConfig = await ovpnReadConfig(openVpnPath) : null;
 
@@ -50,7 +50,11 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
             headless: false,
             args: [
                 `--user-data-dir=${chromiumUserPath}`,
-                `--profile-directory=${profile}`
+                `--profile-directory=${profile}`,
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
             ]
         };
 
@@ -58,52 +62,52 @@ const chromiumUserPath = `${os.homedir()}/.config/chromium`;
 
         await sleep(3000)
 
-        const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0)
-        await page.setDefaultTimeout(15000);
+        const hotPage = await browser.newPage();
+        await hotPage.setDefaultNavigationTimeout(0)
+        await hotPage.setDefaultTimeout(15000);
 
+        console.log("\n[Bansos Hot]")
+        
         try {
-            const [hotBalance, nearBalance] = await hotWallet(page, hotThreshold)
-    
+            const [hotBalance, nearBalance] = await hotWallet(hotPage, hotThreshold)
+            
             if (typeof hotBalance === "number") {
-                totalBalanceHot = totalBalanceHot + balanceHot
-                prettyConsole('info', `Total Balance Hot\t:${totalBalanceHot} $HOT🔥`)
+                totalBalanceHot = totalBalanceHot + hotBalance
             }
             
             if (typeof nearBalance === "number") {
                 totalBalanceNear = totalBalanceNear + nearBalance
-                prettyConsole('info', `Total Balance Near\t:${totalBalanceNear} $NEAR`)
             }
-        } catch (error) {
-            prettyConsole('error', error.message)
-        }
-
-        try {
-            // Close Popup Iframe
-            const popupSelector = 'body > div.popup.popup-payment.popup-payment-verification.popup-web-app.active'
-            await page.waitForSelector(popupSelector)
-            await page.click(popupSelector)
         } catch (error) {
             prettyConsole('error', error.message)
         }
         
+        await hotPage.close();
+        const wavePage = await browser.newPage();
+        await wavePage.setDefaultNavigationTimeout(0);
+        await wavePage.setDefaultTimeout(15000);
+        
+        console.log("\n[Bansos Wave]")
+        
         try {
-            const [balanceSui, balanceOcean] = await waveWallet(page)
+            const [balanceSui, balanceOcean] = await waveWallet(wavePage)
             
             
             if (typeof balanceSui === "number") {
                 totalBalanceSui = totalBalanceSui + balanceSui
-                prettyConsole('info', `Total Balance SUI\t:${totalBalanceSui} $SUI💧`)
             }
             
             if (typeof balanceOcean === "number") {
                 totalBalanceOcean = totalBalanceOcean + balanceOcean
-                prettyConsole('info', `Total Balance Ocean\t:${totalBalanceOcean} $OCEAN💎`)
             }
         } catch (error) {
             prettyConsole('error', error.message)
         }
-
+        
         await rest()
     }
+    prettyConsole('info', `Total Balance Near\t:${totalBalanceNear} $NEAR`)
+    prettyConsole('info', `Total Balance Hot\t:${totalBalanceHot} $HOT🔥`)
+    prettyConsole('info', `Total Balance SUI\t:${totalBalanceSui} $SUI💧`)
+    prettyConsole('info', `Total Balance Ocean\t:${totalBalanceOcean} $OCEAN💎`)
 })()
